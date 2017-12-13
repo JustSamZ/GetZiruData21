@@ -2,8 +2,8 @@ import requests
 import re
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko'}
-r = requests.get(url='http://sh.ziroom.com/z/vr/60534394.html', headers=headers)
-r1 = requests.get(url='http://sh.ziroom.com/z/vr/60372943.html', headers=headers)
+#r = requests.get(url='http://sh.ziroom.com/z/vr/60534394.html', headers=headers)
+#r1 = requests.get(url='http://sh.ziroom.com/z/vr/60372943.html', headers=headers)
 # print(r.status_code)
 
 # <p>(.*?)<\/p>
@@ -55,7 +55,8 @@ def get_url_all(starturl):
     for i in range(1, 51):
         pageurl = starturl[:-1] + str(i)
         startpage = requests.get(url=pageurl, headers=headers)
-        all_url.append(every_page_urllist(startpage))
+        a = every_page_urllist(startpage)
+        all_url.append(a)
     # 下面我要压平二维列表：
     for i in range(len(all_url)):
         for j in range(len(all_url[i])):
@@ -121,8 +122,6 @@ def GetRoomRent(Html_Response):
 
 def GetLocLine(Html_Response):
     T_GetLocLine = re.compile(r'(<span class="ellipsis">\s*\[.+\s*.*<\/span>)')
-    # <span class="ellipsis">\s*\[.+\s*.*<\/span>
-    # <span class="ellipsis">\s*\[.*\]\s*\d{1,2}[^\x00-\xff]*\s*[^\x00-\xff]*\s*<\/span>
     GetLocLine = re.compile(r'(\d{0,1}[\u4e00-\u9fa5]{1,20})')
     LocLineWithTab = T_GetLocLine.findall(Html_Response.text)
     LocLine = GetLocLine.findall(str(LocLineWithTab))
@@ -196,9 +195,7 @@ def GetRoomMateInfo(Html_Response):
     GetRoomMateInfo3 = re.compile(r'([\u4e00-\u9fa5]{2}座)')
     GetRoomMateInfo4 = re.compile(r'((woman)|(man))')
     GetRoomMateInfo5 = re.compile(r'(20[1-2][0-9]\/[0-1][0-9]-20[1-2][0-9]\/[0-1][0-9])')
-
     GetRoomMateInfoWithTab = T_GetRooMateInfo.findall(Html_Response.text)
-
     RoomMateInfo1 = GetRoomMateInfo1.findall(str(GetRoomMateInfoWithTab))
     RoomMateInfo2 = GetRoomMateInfo2.findall(str(GetRoomMateInfoWithTab))
     RoomMateInfo3 = GetRoomMateInfo3.findall(str(GetRoomMateInfoWithTab))
