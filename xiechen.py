@@ -19,11 +19,9 @@ my_set = db.ziru_SH1224
 all_url = ['http://sh.ziroom.com/z/vr/60746029.html','http://sh.ziroom.com/z/vr/60798323.html','http://sh.ziroom.com/z/vr/60878247.html','http://sh.ziroom.com/z/vr/60781346.html']
 #all_url = function.get_url_all(starturl)
 
+
 async def do_some_work(i):
-
     requestlist = await requests.get(url=all_url[i], headers=headers)
-
-
     return 'Done after:'
 
 async def main():

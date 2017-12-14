@@ -11,7 +11,6 @@ starturl = 'http://sh.ziroom.com/z/nl/z2.html?qwd=&p=1' #shanghai
 #starturl = 'http://sz.ziroom.com/z/nl/z3.html?p=3'  #shengzhen
 
 # mongo connection:
-
 conn = MongoClient('localhost', 27017)
 db = conn.ziru
 # my_set = db.ziroom
@@ -19,24 +18,14 @@ db = conn.ziru
 my_set = db.ziru_SH1223
 
 if __name__ == "__main__":
-    # listtest = function.get_url_all(start)
-    # function.get_url_all(starturl)
-    # print(listtest)
-    # my_set.insert({"URL":function.get_url_all(starturl)})
-
 
     all_url = []
     all_url = function.get_url_all(starturl)
-
-
-
-
 
     for i in range(0, len(all_url)):  #
         start = time.time()  # 计时
         requestlist = requests.get(url=all_url[i], headers=headers)
 
-        # 1print(function.GetRoomSn(requestlist)) #pass
         print(all_url[i], i, 'start')
         my_set.insert({
             "SN": function.GetRoomSn(requestlist),
@@ -53,9 +42,7 @@ if __name__ == "__main__":
             "pageurl": all_url[i],  # this need test first.
 
         })
-
         end = time.time()
-        # print(end - start)
         print('done，spend time:', end - start)
 
 
