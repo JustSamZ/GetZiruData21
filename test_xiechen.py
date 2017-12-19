@@ -1,34 +1,31 @@
+
 import asyncio
-
+import aiohttp
 import time
+from aiohttp import ClientSession
+import requests
+from pymongo import MongoClient
+import fun
 
-now = lambda: time.time()
+NUMBERS = range(12)
+URL = 'http://httpbin.org/get?a={}'
 
-async def do_some_work(x):
-    print('Waiting: ', x)
+sema = asyncio.Semaphore(3)  # global nonlocal
 
-    await asyncio.sleep(x)
-    return 'Done after {}s'.format(x)
 
-async def main():
-    coroutine1 = do_some_work(1)
-    coroutine2 = do_some_work(2)
-    coroutine3 = do_some_work(4)
+async def fetch_async(a):
+    async with aiohttp.get(URL.format(a)) as r:
+        data = await r.json()
+    return data['args']['a']
 
-    tasks = [
-        asyncio.ensure_future(coroutine1),
-        asyncio.ensure_future(coroutine2),
-        asyncio.ensure_future(coroutine3)
-    ]
 
-    dones, pendings = await asyncio.wait(tasks)
+async def print_result(a):
+    with (await sema):
+        r = await fetch_async(a)
+        print('fetch({}) = {}'.format(a, r))
 
-    for task in dones:
-        print('Task ret: ', task.result())
-
-start = now()
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
-
-print('TIME: ', now() - start)
+f = asyncio.wait([print_result(num) for num in NUMBERS])
+loop.run_until_complete(f)
+loop.close()
