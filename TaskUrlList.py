@@ -10,28 +10,29 @@ starturl = Setting.starturl
 #将爬好的目标url全部存入文件中，下次调用直接从文件中取得。
 def Geturl_infile():
     urllist = fun.get_url_all(starturl)
-    file = open('taskurl1224.txt','a')
-    try:
-        file.write(str(urllist))
-    finally:
-        file.close()
+    with open('taskurl12244.txt', 'a') as f:
+        try:
+            for i in range(len(urllist)):
+                f.write(urllist[i]+'\n')
+        finally:
+            f.close()
 
 #Geturl_infile()
 
 
 #调用该函数 将返回 所用任务的url list
 def Geturl_fromfile():
-    file = open('taskurl1224.txt','r')
-    try:
-        urllist = file.read()
-        urllist = urllist.split(',')
-    finally:
-        file.close()
-    return urllist
+    with open('taskurl12244.txt', 'r') as f:
+        #list2 = []
+        list3 = []
+        try:
+            list2 = f.readlines()
+            for i in range(len(list2)):
+                list3.append(list2[i].rstrip('\n'))
+        finally:
+            f.close()
 
-    #print(urllist)
-    #print(len(urllist))
-
+        return list3
 #Geturl_fromfile()
 
 
@@ -55,7 +56,7 @@ def split_list(list, num):
 # test function:
 list = [1,2,3,4,5,6,7,8,9,0]
 start = time.time()
-print(split_list(all_url,500))
+print(len(split_list(all_url,500)))
 end = time.time()
 print('TIME: ', end - start)
 '''

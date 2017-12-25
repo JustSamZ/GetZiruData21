@@ -1,31 +1,28 @@
 
-import asyncio
-import aiohttp
-import time
-from aiohttp import ClientSession
-import requests
-from pymongo import MongoClient
-import fun
-
-NUMBERS = range(12)
-URL = 'http://httpbin.org/get?a={}'
-
-sema = asyncio.Semaphore(3)  # global nonlocal
 
 
-async def fetch_async(a):
-    async with aiohttp.get(URL.format(a)) as r:
-        data = await r.json()
-    return data['args']['a']
+list1 = ['asd','1231','14123','ojkjhh']
+
+'''
+with open('test1.txt','a') as f:
+    try:
+        for i in range(len(list1)):
+            f.write(list1[i]+'\n')
+    finally:
+        f.close()
+
+'''
+with open('test1.txt','r') as f:
+    list2 = []
+    list3 = []
+    try:
+        list2 = f.readlines()
+        for i in range(len(list2)):
+            list3.append(list2[i].rstrip('\n'))
+    finally:
+        f.close()
 
 
-async def print_result(a):
-    with (await sema):
-        r = await fetch_async(a)
-        print('fetch({}) = {}'.format(a, r))
-
-
-loop = asyncio.get_event_loop()
-f = asyncio.wait([print_result(num) for num in NUMBERS])
-loop.run_until_complete(f)
-loop.close()
+    print(list2)
+    print(list3)
+    print(len(list3))
