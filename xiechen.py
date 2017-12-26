@@ -5,6 +5,8 @@ import fun
 import Setting
 import Header_UA_Cookies
 import TaskUrlList
+import redis
+r = redis.Redis(host='192.168.2.200', port=6379, decode_responses=True)
 
 headers = Header_UA_Cookies.headers
 starturl = Setting.starturl
@@ -46,10 +48,24 @@ async def run(url_list):
     end = time.time()
     print('Get response TIME: ', end - start)
     print(len(response_list))
+    #将response 内容写入redis 中的list1 里。分片此次写入400条
+
+    for i in range(len(response_list)):
+        r.rpush('list2', response_list[i])
+    print(r.llen('list2'))
+
+    # print(len(list1))
+    # for i in range(len(list1)):
+    #    r.rpush('list1',list1[i])
+    # r.rpush('list1',list1[1])
+    #print(r.llen('list1'))
+    # print(r.lrange('list1',0,100))
+    # r.delete('list1')
+
     start = time.time()  # 计时
-
+    '''
     for j in range(len(response_list)):
-
+        print(j , 'start:')
         print(fun.GetRoomSn(str(response_list[j])))
         print(fun.GetRoomName(str(response_list[j])))
         print(fun.GetRoomRent(str(response_list[j])))
@@ -64,7 +80,7 @@ async def run(url_list):
 
     end = time.time()
     print('Processing TIME: ', end - start)
-
+    '''
 loop = asyncio.get_event_loop()
 future = asyncio.ensure_future(run(all_url[1]))
 loop.run_until_complete(future)

@@ -10,7 +10,7 @@ starturl = Setting.starturl
 #将爬好的目标url全部存入文件中，下次调用直接从文件中取得。
 def Geturl_infile():
     urllist = fun.get_url_all(starturl)
-    with open('taskurl12244.txt', 'a') as f:
+    with open('taskurl1226.txt', 'a') as f:
         try:
             for i in range(len(urllist)):
                 f.write(urllist[i]+'\n')
@@ -22,7 +22,7 @@ def Geturl_infile():
 
 #调用该函数 将返回 所用任务的url list
 def Geturl_fromfile():
-    with open('taskurl12244.txt', 'r') as f:
+    with open('taskurl1226.txt', 'r') as f:
         #list2 = []
         list3 = []
         try:
