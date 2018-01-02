@@ -38,7 +38,10 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
     for res in result:
-        print("every time:", res.get())
+        print("every time:", res, res.get())
     end = time.time()
     print('Processing Total TIME: ', end - start)
     print(len(result), "Sub-process(es) done.")
+
+
+

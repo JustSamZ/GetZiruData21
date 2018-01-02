@@ -1,25 +1,8 @@
 import requests
 import re
+import Header_UA_Cookies
 
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko'}
-#r = requests.get(url='http://sh.ziroom.com/z/vr/60534394.html', headers=headers)
-#r1 = requests.get(url='http://sh.ziroom.com/z/vr/60372943.html', headers=headers)
-# print(r.status_code)
-
-# <p>(.*?)<\/p>
-# first get data with html tabs,need do again with New function
-
-# T_GetSn = re.compile(r'("SHZR(\w|\d|_)*")')
-# T_GetName = re.compile(r'(<h2>\s*[^\x00-\xff]*\d*[^\x00-\xff]*-\d*[^\x00-\xff]*\s*<\/h2>)')
-# T_GetLocLine = re.compile(r'(<span class="ellipsis">\s*\[.*\]\s*\d{1,2}[^\x00-\xff]*\s*[^\x00-\xff]*\s*<\/span>)')
-# T_GetRoomArea = re.compile(r'(<li><b><\/b>[^\x00-\xff]+：\s*\d{1,4}\.\d{0,4}\s*[^\x00-\xff]<\/li>)')
-# T_GetRoomDirection = re.compile(r'(<li><b><\/b>.*[南|北|东|西]<\/li>)')
-# T_GetRoomModel = re.compile(r'(<li><b><\/b>.*\d室\d厅\s*<span class="icons">[\u4e00-\u9fa5]<\/span>\s*<\/li>)')
-# T_GetRoomFloor = re.compile(r'(<li><b><\/b>楼层.{1,100}<\/li>)')
-# T_GetTrafficLine = re.compile(r'(<b><\/b>交通.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n.*\n)')
-# T_GetRoomRent = re.compile(r'(<span class="room_price" id="room_price">￥\d+<\/span>)')
-# T_GetRoomPic = re.compile(r'(<a\shref="http:\/\/.*\.(JPG|jpg)"\s*class="pirobox_t6">)') #Need remove the duplicate
-# T_GetRoomCoordinate = re.compile(r'(data-lng="\d{1,3}\.\d+"\s*data-lat="\d{1,2}\.\d+")')
+headers = Header_UA_Cookies.headers
 T_GetRoomCheckInData = re.compile(r'(<p>\s*20[1-2][0-9]\/[0-1][0-9]-20[1-2][0-9]\/[0-1][0-9]<\/p>)')  # remove
 T_GetRoomNum = re.compile(r'(<p>0[1-9]卧<\/p>)')  # remove
 T_GetRooMateInfo = re.compile(r'(<div\sclass="user_top\sclearfix">(\s*.*){1,13})')
@@ -33,7 +16,6 @@ def every_page_urllist(startpage):
     url2 = []
     for i in range(0, len(url1)):
         url2.append(url1[i].replace('href="', 'http:'))
-
     return url2
 
 
@@ -63,38 +45,6 @@ def get_url_all(starturl):
             all_url_task.append(all_url[i][j])
     all_url_task = list(set(all_url_task))  # 去重复
     return all_url_task
-    '''
-    print(len(all_url_task))
-    print(all_url_task)
-
-    print(all_url)
-    print(len(starturl))
-    print(starturl)
-    print(starturl[:41]+'2')
-    '''
-
-    '''
-    all_url.append(every_page_urllist(startpage))
-
-    next_page = requests.get(url=get_nextpage_url(startpage), headers=headers)
-
-    next_page_url = get_nextpage_url(next_page)
-    print(next_page_url)
-    all_url.append(every_page_urllist(next_page))
-
-    next_page = requests.get(url=next_page_url, headers=headers)
-
-    next_page_url = get_nextpage_url(next_page)
-    all_url.append(every_page_urllist(next_page))
-
-
-    while (next_page_url != get_nextpage_url(next_page)):
-        next_page = requests.get(url=next_page_url, headers=headers)
-        next_page_url = get_nextpage_url(next_page)
-        all_url.append(every_page_urllist(next_page))
-    return all_url
-    '''
-
 
 def GetRoomSn(Html_Response):
     T_GetSn = re.compile(r'("SH\w\w(\w|\d|_)*")')

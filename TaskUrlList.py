@@ -1,7 +1,6 @@
 # Create in 2017-12-19
 import Setting
 import fun
-import time
 starturl = Setting.starturl
 
 #all_url = fun.get_url_all(starturl)
@@ -22,7 +21,7 @@ def Geturl_infile():
 
 #调用该函数 将返回 所用任务的url list
 def Geturl_fromfile():
-    with open('taskurl1226.txt', 'r') as f:
+    with open('taskurl1226test1.txt', 'r') as f:
         #list2 = []
         list3 = []
         try:
